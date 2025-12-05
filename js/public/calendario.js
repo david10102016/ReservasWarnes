@@ -1,52 +1,84 @@
 // js/public/calendario.js
-import { cargarDatosPublicos } from './utils.js';
+
+// Variable global compartida con formulario.js
+window.fechaSeleccionada = null;
 
 const hoy = new Date();
-let fechaSeleccionada = null;
+hoy.setHours(0, 0, 0, 0); // Para comparar solo fechas
 
 export function iniciarCalendario() {
-  const cont = document.getElementById('calendario');
-  mostrarMes(hoy.getFullYear(), hoy.getMonth());
+  generarCalendario(hoy.getFullYear(), hoy.getMonth());
+  document.getElementById('btn-reservar').onclick = mostrarReserva;
 }
 
-function mostrarMes(year, month) {
-  const cont = document.getElementById('calendario');
-  cont.innerHTML = '';
-  const primerDia = new Date(year, month, 1).getDay();
-  const diasEnMes = new Date(year, month+1, 0).getDate();
+function mostrarReserva() {
+  document.getElementById('seccion-reserva').classList.remove('oculto');
+  document.getElementById('seccion-reserva').scrollIntoView({ behavior: 'smooth' });
+}
 
-  // Días de la semana
-  ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].forEach(d => {
-    const div = document.createElement('div');
-    div.textContent = d; div.style.fontWeight = '600';
-    cont.appendChild(div);
+function generarCalendario(anio, mes) {
+  const contenedor = document.getElementById('calendario');
+  contenedor.innerHTML = '';
+
+  // Cabecera: días de la semana
+  const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  diasSemana.forEach(dia => {
+    const cab = document.createElement('div');
+    cab.textContent = dia;
+    cab.style.fontWeight = 'bold';
+    cab.style.background = '#2d3436';
+    cab.style.color = 'white';
+    contenedor.appendChild(cab);
   });
 
-  // Días vacíos
-  for(let i=0; i<primerDia; i++) cont.innerHTML += '<div></div>';
+  const primerDia = new Date(anio, mes, 1).getDay();
+  const diasEnMes = new Date(anio, mes + 1, 0).getDate();
+
+  // Espacios vacíos antes del día 1
+  for (let i = 0; i < primerDia; i++) {
+    contenedor.appendChild(document.createElement('div'));
+  }
 
   // Días del mes
-  for(let dia=1; dia<=diasEnMes; dia++) {
-    const fecha = new Date(year, month, dia);
-    const div = document.createElement('div');
-    div.className = 'dia';
-    div.textContent = dia;
-    if (fecha.toDateString() === hoy.toDateString()) div.classList.add('hoy');
-    if (fecha < hoy) div.disabled = true;
-    else div.onclick = () => seleccionarFecha(fecha);
-    cont.appendChild(div);
+  for (let dia = 1; dia <= diasEnMes; dia++) {
+    const fecha = new Date(anio, mes, dia);
+    const celda = document.createElement('div');
+    celda.className = 'dia';
+    celda.textContent = dia;
+
+    // Día de hoy
+    if (fecha.toDateString() === hoy.toDateString()) {
+      celda.classList.add('hoy');
+    }
+
+    // Días pasados → deshabilitados
+    if (fecha < hoy) {
+      celda.classList.add('deshabilitado');
+      celda.style.opacity = '0.4';
+      celda.style.cursor = 'not-allowed';
+    } else {
+      celda.style.cursor = 'pointer';
+      celda.onclick = () => seleccionarFecha(fecha, celda);
+    }
+
+    contenedor.appendChild(celda);
   }
 }
 
-function seleccionarFecha(fecha) {
-  fechaSeleccionada = fecha;
-  document.querySelectorAll('.dia').forEach(d => d.classList.remove('seleccionado'));
-  event.target.classList.add('seleccionado');
-  document.getElementById('seccion-reserva').scrollIntoView({behavior:'smooth'});
+function seleccionarFecha(fecha, elemento) {
+  // Quitar selección anterior
+  document.querySelectorAll('.dia.seleccionado').forEach(d => d.classList.remove('seleccionado'));
+
+  // Marcar nueva selección
+  elemento.classList.add('seleccionado');
+  window.fechaSeleccionada = fecha;
+
+  // Bajar al formulario
+  document.getElementById('seccion-reserva').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Al cargar página
-document.getElementById('btn-reservar').onclick = () => {
-  document.getElementById('seccion-reserva').classList.remove('oculto');
-  document.getElementById('seccion-reserva').scrollIntoView({behavior:'smooth'});
-};
+// Botones de mes anterior/siguiente (opcional, puedes agregarlos después)
+// por ahora solo mostramos el mes actual
+
+// Iniciar al cargar
+document.addEventListener('DOMContentLoaded', iniciarCalendario);
