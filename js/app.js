@@ -1,5 +1,5 @@
 // js/app.js  ← ÚNICO archivo que controla todo el index.html
-const SCRIPT_URL = "https://script.google.com/macros/library/d/1vFHvt7ItC8Hp3xoC6qy5Ju_DiC00c2WJdfxXAU2TC4JOxi9REXBNmEej/1";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS_TthIkWZ81eObLAV4bRPIs_M1Yy6dKXNuMoq7dAuac8KPcZz68CGlm33CqaDe0oy/exec";
 
 window.fechaSeleccionada = null;
 const hoy = new Date();
