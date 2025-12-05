@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container" style="padding:40px 20px;">
+    <h1 style="text-align:center; color:#2d3436;">Panel Administrador</h1>
+    
+    <div id="login" class="form-card" style="max-width:400px; margin:50px auto;">
+      <input type="password" id="pass" placeholder="Contraseña" style="text-align:center;">
+      <button class="btn-primary" onclick="login()">Ingresar</button>
+    </div>
+
+    <div id="panel" class="oculto">
+      <h2>Reservas pendientes</h2>
+      <div id="lista-pendientes"></div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/admin/auth.js"></script>
+  <script type="module" src="../js/admin/admin.js"></script>
+</body>
+</html>
