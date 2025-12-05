@@ -1,5 +1,5 @@
 // js/app.js  ← REEMPLAZA TODO TU ARCHIVO CON ESTE
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS_TthIkWZ81eObLAV4bRPIs_M1Yy6dKXNuMoq7dAuac8KPcZz68CGlm33CqaDe0oy/exec";
+const SCRIPT_URL = "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://script.google.com/macros/s/AKfycbwS_TthIkWZ81eObLAV4bRPIs_M1Yy6dKXNuMoq7dAuac8KPcZz68CGlm33CqaDe0oy/exec");
 
 window.fechaSeleccionada = null;
 const hoy = new Date();
